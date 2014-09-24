@@ -1,0 +1,7 @@
+/.build
+/ngeoapp/static/build
+/node_modules
+/development.ini
+/production.ini
+*.pyc
+*.egg-info

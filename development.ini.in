@@ -1,0 +1,71 @@
+###
+# app configuration
+# http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/environment.html
+###
+
+[app:main]
+use = egg:ngeo-app
+
+pyramid.reload_templates = true
+pyramid.debug_authorization = false
+pyramid.debug_notfound = false
+pyramid.debug_routematch = false
+pyramid.default_locale_name = en
+pyramid.includes =
+    pyramid_debugtoolbar
+    pyramid_closure
+    pyramid_mako
+
+pyramid_closure.closure_path = __CLOSURE_LIBRARY_PATH__
+pyramid_closure.openlayers_path = %(here)s/node_modules/openlayers
+pyramid_closure.ngeo_path = %(here)s/node_modules/ngeo
+pyramid_closure.roots =
+    __CLOSURE_LIBRARY_PATH__/closure/goog
+pyramid_closure.roots_with_prefix =
+    ../../../ol %(here)s/node_modules/openlayers
+    ../../../ngeo %(here)s/node_modules/ngeo
+
+# By default, the toolbar only appears for clients from IP addresses
+# '127.0.0.1' and '::1'.
+# debugtoolbar.hosts = 127.0.0.1 ::1
+
+###
+# wsgi server configuration
+###
+
+[server:main]
+use = egg:waitress#main
+host = 0.0.0.0
+port = 6543
+
+###
+# logging configuration
+# http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/logging.html
+###
+
+[loggers]
+keys = root, ngeoapp
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_ngeoapp]
+level = DEBUG
+handlers =
+qualname = ngeoapp
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s
